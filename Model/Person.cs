@@ -1,27 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace TheDonMVVMTutorial.Model
 {
     public class Person : INotifyPropertyChanged
     {
         #region Fields
-        private string name;
+        private string firstName;
+        private string lastName;
         private string address;
         #endregion
 
         #region Properties
-        public string Name 
+        public string FirstName 
         {
-            get => name;
-            set { name = value; onPropertyChanged(nameof(name)); }
+            get => firstName;
+            set { firstName = value; onPropertyChanged(nameof(firstName)); }
+        }
+        public string LastName
+        {
+            get => lastName;
+            set { lastName = value; onPropertyChanged(nameof(lastName)); }
         }
         public string Address 
         {
             get => address;
-            set { address = value; onPropertyChanged(nameof(address)); }
+            set { address = value;  onPropertyChanged(nameof(address)); }
         }
         #endregion
 

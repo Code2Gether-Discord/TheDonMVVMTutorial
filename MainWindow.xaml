@@ -3,27 +3,66 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:TheDonMVVMTutorial.ViewModel"
+        xmlns:vm="clr-namespace:TheDonMVVMTutorial.ViewModel"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
         WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="450" Width="800">
 
-    <StackPanel>
+    <DockPanel>
 
-        <TextBox x:Name="nameTextBox" Margin="10"
-                 Text="{Binding Person.Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+        <DockPanel DockPanel.Dock="Left">
 
-        <TextBox x:Name="addressTextBox" Margin="10"
-                 Text="{Binding Person.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Margin="10"
+                    DockPanel.Dock="Top"
+                    Command="{Binding AddUserCommand}"
+                    Content="Add User"/>
 
-        <Button Content="Update Me!"
-                Margin="10"
-                Command="{Binding updateMeCommand}"/>
+            <ListBox Margin="10"
+                     Width="200"
+                     ItemsSource="{Binding PersonList}"
+                     SelectedItem="{Binding Person, Mode=TwoWay}"
+                     DisplayMemberPath="FirstName" />
 
-        <Button Content="Update My Properties!"
-                Margin="10"
-                Command="{Binding updateMyPropertiesCommand}"/>
+        </DockPanel>
 
-    </StackPanel>
+        <StackPanel>
+
+            <DockPanel>
+
+                <TextBlock Text="First Name: "
+                           Margin="10"
+                           VerticalAlignment="Center"/>
+
+                <TextBox x:Name="nameTextBox" Margin="10"
+                         Text="{Binding Person.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </DockPanel>
+
+            <DockPanel>
+
+                <TextBlock Text="Last Name: "
+                           Margin="10"
+                           VerticalAlignment="Center"/>
+
+                <TextBox x:Name="lastNameTextBox" Margin="10"
+                         Text="{Binding Person.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </DockPanel>
+
+            <DockPanel>
+
+                <TextBlock Text="Address: "
+                           Margin="10"
+                           VerticalAlignment="Center"/>
+
+                <TextBox x:Name="addressTextBox" Margin="10"
+                         Text="{Binding Person.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </DockPanel>
+
+        </StackPanel>
+
+    </DockPanel>
 
 </Window>

@@ -1,20 +1,30 @@
-﻿using Prism.Commands;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Text;
 using TheDonMVVMTutorial.Model;
+using System.Windows.Input;
+using Prism.Commands;
+using System.Collections.ObjectModel;
 
 namespace TheDonMVVMTutorial.ViewModel
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         #region Fields
+        private ObservableCollection<Person> _personList;
         private Person person;
         #endregion
 
+        #region Events
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
         #region Properties
-        public Person Person 
+        public ObservableCollection<Person> PersonList
+        {
+            get => _personList;
+            set { _personList = value; onPropertyChanged(nameof(PersonList)); }
+        }
+        public Person Person
         {
             get => person;
             set
@@ -26,50 +36,42 @@ namespace TheDonMVVMTutorial.ViewModel
         #endregion
 
         #region Commands
-        public DelegateCommand updateMeCommand { get; set; }
-        public DelegateCommand updateMyPropertiesCommand { get; set; }
+        public ICommand AddUserCommand { get; set; }
         #endregion
 
         #region Constructor
         public MainWindowViewModel()
         {
-            updateMeCommand = new DelegateCommand(updatePerson);
-            updateMyPropertiesCommand = new DelegateCommand(updatePersonProperties);
+            AddUserCommand = new DelegateCommand(AddUser);
 
-            Person = new Person
+            PersonList = new ObservableCollection<Person>
             {
-                Name = "Joe Swanson",
-                Address = "987 Spooner Street, Quahog, RI, USA"
+                new Person { FirstName = "Joe", LastName="Swanson", Address = "987 Spooner Street, Quahog, RI, USA" },
+                new Person { FirstName = "Peter", LastName="Griffin", Address = "I don't know, i just have a goofy laugh." },
+                new Person { FirstName = "Glann", LastName="Quagmire", Address = "Giggety"}
             };
         }
         #endregion
 
         #region Methods
-        public void updatePerson()
+        private void AddUser()
         {
-            // Creating a new person
-            Person = new Person
+            var newPerson = new Person
             {
-                Name = "Peter Griffin",
-                Address = "I don't know, i just have a goofy laugh."
+                FirstName = Person.FirstName,
+                LastName = Person.LastName,
+                Address = Person.Address
             };
-        }
 
-        public void updatePersonProperties()
-        {
-            // Updating the person members.
-            Person.Name = "Glenn Quagmire";
-            Person.Address = "Giggety";
+            PersonList.Add(newPerson);
+
+            Person = newPerson;
         }
 
         private void onPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion
-
-        #region Events
-        public event PropertyChangedEventHandler PropertyChanged;
         #endregion
     }
 }
